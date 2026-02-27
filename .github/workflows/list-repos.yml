@@ -1,0 +1,28 @@
+name: List GitHub Repositories
+
+on:
+  workflow_dispatch:
+    inputs:
+      username:
+        description: "GitHub username"
+        required: true
+        default: "Bharathkammala"
+
+jobs:
+  list-repos:
+    runs-on: windows-latest
+
+    env:
+      GITHUB_USERNAME: ${{ github.event.inputs.username }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Display repositories using GitHub API
+        shell: pwsh
+        run: |
+          Write-Host "Fetching repositories for $env:GITHUB_USERNAME"
+          $url = "https://api.github.com/users/$env:GITHUB_USERNAME/repos"
+          $repos = Invoke-RestMethod -Uri $url
+          $repos | ForEach-Object { $_.name }

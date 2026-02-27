@@ -37,41 +37,68 @@ namespace PrimeNumbers
             }
 
 
+
+
+
+            //int n = 9;
+            //for (int i = 2; i <= n; i++)
+            //{
+            //    bool isPrime = true;
+
+            //    // Check from 2 to sqrt(i)
+            //    for (int j = 2; j <= Math.Sqrt(i); j++)
+            //    {
+            //        if (i % j == 0)
+            //        {
+            //            isPrime = false;
+            //            break;
+            //        }
+            //    }
+
+            //    if (isPrime)
+            //        Console.Write(i + " ");
+            //}
+            // Output: 2 3 5 7
+
+
+
+
+
             ///print butterfly pattern
 
 
-            for (int i = 0; i < n + 1; i++)
-            {
-                for (int j = 0; j < i; j++)
-                {
-                    Console.Write("*");
-                }
-                for (int k = 0; k < 2 * (n - i); k++)
-                {
-                    Console.Write(" ");
-                }
-                for (int j = 0; j < i; j++)
-                {
-                    Console.Write("*");
-                }
-                Console.WriteLine();
-            }
-            for (int i = n - 1; i >= 0; i--)
-            {
-                for (int j = 0; j < i; j++)
-                {
-                    Console.Write("*");
-                }
-                for (int k = 0; k < 2 * (n - i); k++)
-                {
-                    Console.Write(" ");
-                }
-                for (int j = 0; j < i; j++)
-                {
-                    Console.Write("*");
-                }
-                Console.WriteLine();
-            }
+            //    for (int i = 0; i < n + 1; i++)
+            //    {
+            //        for (int j = 0; j < i; j++)
+            //        {
+            //            Console.Write("*");
+            //        }
+            //        for (int k = 0; k < 2 * (n - i); k++)
+            //        {
+            //            Console.Write(" ");
+            //        }
+            //        for (int j = 0; j < i; j++)
+            //        {
+            //            Console.Write("*");
+            //        }
+            //        Console.WriteLine();
+            //    }
+            //    for (int i = n - 1; i >= 0; i--)
+            //    {
+            //        for (int j = 0; j < i; j++)
+            //        {
+            //            Console.Write("*");
+            //        }
+            //        for (int k = 0; k < 2 * (n - i); k++)
+            //        {
+            //            Console.Write(" ");
+            //        }
+            //        for (int j = 0; j < i; j++)
+            //        {
+            //            Console.Write("*");
+            //        }
+            //        Console.WriteLine();
+            //    }
         }
     }
 }

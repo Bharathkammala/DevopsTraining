@@ -11,9 +11,9 @@ namespace PrimeNumbers
         static void Main(string[] args)
         {
 
-            Console.Write("Enter number: ");
-            int n = int.Parse(Console.ReadLine());
-
+           // Console.Write("Enter number: ");
+           // int n = int.Parse(Console.ReadLine());
+            int n = 100;
             for (int i = 2; i <= n; i++)
             {
                 bool isPrime = true;

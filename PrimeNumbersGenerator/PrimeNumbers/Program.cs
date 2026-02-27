@@ -10,44 +10,44 @@ namespace PrimeNumbers
     {
         static void Main(string[] args)
         {
-            int n = 9;
+        //    //int n = 9;
            
 
-            ///print butterfly pattern
+        //    ///print butterfly pattern
 
 
-            for (int i = 0; i < n + 1; i++)
-            {
-                for (int j = 0; j < i; j++)
-                {
-                    Console.Write("*");
-                }
-                for (int k = 0; k < 2 * (n - i); k++)
-                {
-                    Console.Write(" ");
-                }
-                for (int j = 0; j < i; j++)
-                {
-                    Console.Write("*");
-                }
-                Console.WriteLine();
-            }
-            for (int i = n - 1; i >= 0; i--)
-            {
-                for (int j = 0; j < i; j++)
-                {
-                    Console.Write("*");
-                }
-                for (int k = 0; k < 2 * (n - i); k++)
-                {
-                    Console.Write(" ");
-                }
-                for (int j = 0; j < i; j++)
-                {
-                    Console.Write("*");
-                }
-                Console.WriteLine();
-            }
+        //    for (int i = 0; i < n + 1; i++)
+        //    {
+        //        for (int j = 0; j < i; j++)
+        //        {
+        //            Console.Write("*");
+        //        }
+        //        for (int k = 0; k < 2 * (n - i); k++)
+        //        {
+        //            Console.Write(" ");
+        //        }
+        //        for (int j = 0; j < i; j++)
+        //        {
+        //            Console.Write("*");
+        //        }
+        //        Console.WriteLine();
+        //    }
+        //    for (int i = n - 1; i >= 0; i--)
+        //    {
+        //        for (int j = 0; j < i; j++)
+        //        {
+        //            Console.Write("*");
+        //        }
+        //        for (int k = 0; k < 2 * (n - i); k++)
+        //        {
+        //            Console.Write(" ");
+        //        }
+        //        for (int j = 0; j < i; j++)
+        //        {
+        //            Console.Write("*");
+        //        }
+        //        Console.WriteLine();
+        //    }
         }
     }
 }

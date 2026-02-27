@@ -10,7 +10,7 @@ namespace PrimeNumbers
     {
         static void Main(string[] args)
         {
-            //int n = 9;
+            int n = 9;
 
 
             ///print butterfly pattern

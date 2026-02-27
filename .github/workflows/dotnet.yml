@@ -1,0 +1,25 @@
+name: Build Prime Number Project
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
+
+    - name: Restore packages
+      run: nuget restore
+
+    - name: Build solution
+      run: msbuild PrimeNumbersGenerator.sln /p:Configuration=Release

@@ -2,16 +2,18 @@ name: List GitHub Repositories
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - ".github/workflows/list-repos.yml"
+    inputs:
+      username:
+        description: "GitHub username"
+        required: true
+        default: "Bharathkammala"
 
 jobs:
   list-repos:
     runs-on: windows-latest
 
     env:
-      GITHUB_USERNAME: Bharathkammala
+      GITHUB_USERNAME: ${{ github.event.inputs.username }}
 
     steps:
       - name: Checkout repository

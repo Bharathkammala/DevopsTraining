@@ -19,7 +19,7 @@ jobs:
       uses: NuGet/setup-nuget@v2
 
     - name: Restore packages
-      run: nuget restore
+      run: nuget restore PrimeNumbersGenerator/PrimeNumbersGenerator.sln
 
     - name: Build solution
-      run: msbuild PrimeNumbersGenerator.sln /p:Configuration=Release
+      run: msbuildPrimeNumbersGenerator/PrimeNumbersGenerator.sln /p:Configuration=Release

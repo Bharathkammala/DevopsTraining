@@ -13,7 +13,7 @@ namespace PrimeNumbers
 
            // Console.Write("Enter number: ");
            // int n = int.Parse(Console.ReadLine());
-            int n = 100;
+            int n = 10;
             for (int i = 2; i <= n; i++)
             {
                 bool isPrime = true;
@@ -34,6 +34,43 @@ namespace PrimeNumbers
 
                 if (i == 2 || isPrime)
                     Console.Write(i + " ");
+            }
+
+
+            ///print butterfly pattern
+
+
+            for (int i = 0; i < n + 1; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    Console.Write("*");
+                }
+                for (int k = 0; k < 2 * (n - i); k++)
+                {
+                    Console.Write(" ");
+                }
+                for (int j = 0; j < i; j++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
+            }
+            for (int i = n - 1; i >= 0; i--)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    Console.Write("*");
+                }
+                for (int k = 0; k < 2 * (n - i); k++)
+                {
+                    Console.Write(" ");
+                }
+                for (int j = 0; j < i; j++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
             }
         }
     }

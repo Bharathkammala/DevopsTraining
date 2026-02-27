@@ -1,4 +1,4 @@
-name: Build Prime Number Project
+name: Build Pattern Project
 
 on:
   push:

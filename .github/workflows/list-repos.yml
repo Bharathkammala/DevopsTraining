@@ -1,0 +1,26 @@
+name: List GitHub Repositories
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/list-repos.yml"
+
+jobs:
+  list-repos:
+    runs-on: windows-latest
+
+    env:
+      GITHUB_USERNAME: Bharathkammala
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Display repositories using GitHub API
+        shell: pwsh
+        run: |
+          Write-Host "Fetching repositories for $env:GITHUB_USERNAME"
+          $url = "https://api.github.com/users/$env:GITHUB_USERNAME/repos"
+          $repos = Invoke-RestMethod -Uri $url
+          $repos | ForEach-Object { $_.name }

@@ -13,7 +13,7 @@ namespace PrimeNumbers
 
            // Console.Write("Enter number: ");
            // int n = int.Parse(Console.ReadLine());
-            int n = 10;
+            int n = 9;
             for (int i = 2; i <= n; i++)
             {
                 bool isPrime = true;

@@ -22,4 +22,4 @@ jobs:
       run: nuget restore PrimeNumbersGenerator/PrimeNumbersGenerator.sln
 
     - name: Build solution
-      run: msbuildPrimeNumbersGenerator/PrimeNumbersGenerator.sln /p:Configuration=Release
+      run: msbuild PrimeNumbersGenerator/PrimeNumbersGenerator.sln /p:Configuration=Release

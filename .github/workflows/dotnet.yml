@@ -25,4 +25,4 @@ jobs:
       run: msbuild PrimeNumbersGenerator/PrimeNumbersGenerator.sln /p:Configuration=Release
 
     - name: Run app
-      run: PrimeNumbersGenerator/bin/Release/PrimeNumbersGenerator.exe
+      run: .\PrimeNumbersGenerator\PrimeNumbers\bin\Release\PrimeNumbers.exe

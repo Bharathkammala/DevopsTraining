@@ -129,15 +129,19 @@ for candidate = 3 to N step 2:        // odd candidates only
 
 ---
 
+
 ## 🧩 C# Code Walkthrough
 
 ### Entry Point
 ```csharp
-using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PrimeNumbersGenerator
+namespace PrimeNumbers
 {
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
@@ -145,54 +149,48 @@ namespace PrimeNumbersGenerator
 
 ### Read User Input
 ```csharp
-            Console.Write("Enter a number N: ");
-            int N = int.Parse(Console.ReadLine());
-
-            // Edge case: no primes below 2
-            if (N < 2) return;
+            Console.Write("Enter number: ");
+            int n = int.Parse(Console.ReadLine());
 ```
 
-### Handle 2 — The Only Even Prime
+### Outer Loop — Every Candidate from 2 to N
 ```csharp
-            // Print 2 separately so the main loop can skip all even numbers
-            Console.Write(2 + " ");
-```
-
-### Outer Loop — Odd Candidates Only
-```csharp
-            // Start at 3, step by 2 → generates 3, 5, 7, 9, 11 ...
-            for (int candidate = 3; candidate <= N; candidate += 2)
+            for (int i = 2; i <= n; i++)
             {
                 bool isPrime = true;
 ```
 
-### Inner Loop — Trial Division up to √candidate
+### Filter Even Numbers Instantly
 ```csharp
-                // Only test up to the square root
-                int sqrtCandidate = (int)Math.Sqrt(candidate);
+                if (i > 2 && i % 2 == 0)
+                    isPrime = false;
+```
 
-                // Test only odd divisors: 3, 5, 7 ...
-                for (int d = 3; d <= sqrtCandidate; d += 2)
+### Inner Loop — Trial Division up to √i (Odd Divisors Only)
+```csharp
+                else
                 {
-                    if (candidate % d == 0)
+                    for (int j = 3; j * j <= i; j += 2)
                     {
-                        isPrime = false;
-                        break;   // composite confirmed — stop checking
+                        if (i % j == 0)
+                        {
+                            isPrime = false;
+                            break;   // composite confirmed — stop checking
+                        }
                     }
                 }
 ```
 
 ### Print and Close
 ```csharp
-                if (isPrime)
-                    Console.Write(candidate + " ");
+                if (i == 2 || isPrime)
+                    Console.Write(i + " ");
             }
-
-            Console.WriteLine();
         }
     }
 }
 ```
+
 
 ---
 

@@ -1,68 +1,325 @@
-﻿# Prime Numbers Generator with GitHub Actions CI
+# 🔢 Prime Numbers Generator — DevOps CI Demo
 
-## 📌 Project Overview
+![CI Main](https://github.com/Bharathkammala/DevopsTraining/actions/workflows/dotnet.yml/badge.svg?branch=main)
+![CI Dev](https://github.com/Bharathkammala/DevopsTraining/actions/workflows/testing.yml/badge.svg?branch=testing)
 
-This project is a simple C# console application that prints prime numbers from **1 to N** using an optimized square-root approach.
-
-The main goal of this repository is to demonstrate **GitHub Actions Continuous Integration (CI)** for a .NET Framework project.
-
----
-
-## ⚙️ Features
-
-* Accepts user input (N)
-* Prints all prime numbers from 1 to N
-* Uses optimized prime checking logic (√n)
-* Automated build using GitHub Actions
+A C# .NET Framework console application that generates all prime numbers up to **N** using an optimized square-root algorithm. This repository is also a hands-on demonstration of **GitHub Actions CI/CD** with branch-specific workflow triggers.
 
 ---
 
-## 🛠️ Tech Stack
+## 📌 Table of Contents
 
-* C#
-* .NET Framework Console Application
-* Git & GitHub
-* GitHub Actions
+- [Project Overview](#-project-overview)
+- [Architecture](#-architecture)
+- [Algorithm Explained](#-algorithm-explained)
+- [C# Code Walkthrough](#-c-code-walkthrough)
+- [GitHub Actions CI](#-github-actions-ci)
+- [How to Run Locally](#-how-to-run-locally)
+- [Tech Stack](#-tech-stack)
 
 ---
 
-## 🚀 CI Automation
+## 🧭 Project Overview
 
-A GitHub Actions workflow is configured to:
+This project serves two purposes:
 
-* Trigger on every push to the `main` branch
-* Restore NuGet packages
-* Build the solution automatically
-* Validate code integration
+1. **Algorithm Practice** — Implements an efficient prime number generator using mathematical optimizations (square-root bound + odd-number iteration).
+2. **DevOps Practice** — Configures GitHub Actions to automate build pipelines that fire only when code is pushed to specific branches (`main` or `dev`).
 
-Workflow file location:
+---
 
+## 🏗 Architecture
+
+### Repository Structure
 ```
-.github/workflows/dotnet.yml
+DevopsTraining/
+├── .github/
+│   └── workflows/
+│       ├── dotnet.yml      ← CI pipeline for the 'main' branch
+│       └── testing.yml       ← CI pipeline for the 'testing' branch
+├── PrimeNumbersGenerator/
+│   ├── Program.cs               ← Core algorithm logic
+│   ├── PrimeNumbersGenerator.csproj
+│   └── App.config
+├── .vs/                         ← Visual Studio metadata (local only)
+└── README.md
+```
+
+### CI/CD Flow
+```
+Developer
+  │
+  └─── git push origin <branch>
+              │
+              ▼
+        GitHub detects push event
+              │
+              ▼
+        Branch filter check
+         ┌────┴────┐
+       main       dev        feature/* (no trigger)
+         │          │
+         ▼          ▼
+      dotnet      testing
+      .yml          .yml
+         │          │
+         └────┬─────┘
+              ▼
+     ubuntu-latest runner
+     ┌──────────────────┐
+     │ 1. Checkout code │
+     │ 2. Setup .NET    │
+     │ 3. Restore pkgs  │
+     │ 4. Build         │
+     └──────────────────┘
+              │
+        ✅ Pass / ❌ Fail
+```
+
+---
+
+## ⚙️ Algorithm Explained
+
+The algorithm generates all prime numbers from **2 to N** using three layers of optimization:
+
+### Step 1 — Filter Even Numbers Immediately
+
+> **2** is printed as a special case (the only even prime).  
+> The outer loop then starts at **3** and increments by **2**, so the sequence is `3, 5, 7, 9, 11 ...`  
+> Even numbers are structurally skipped — **halving the search space instantly.**
+
+### Step 2 — Square-Root Upper Bound
+
+> For any composite number `n`, at least one divisor must be ≤ √n.  
+> So instead of checking divisors from `2` to `n-1`, we only check up to **√n**.  
+> If no factor is found by then, the number is **guaranteed prime**.
+
+### Step 3 — Iterate Only Over Odd Divisors
+
+> The inner divisor loop also starts at **3** and steps by **2**.  
+> Since the candidate is odd, no even number can divide it evenly.  
+> This roughly **halves the inner loop work** as well.
+
+### Complexity Comparison
+
+| Metric | Naïve Approach | This Implementation |
+|---|---|---|
+| Candidates tested | 2 … N (all) | 3, 5, 7 … N (odd only) |
+| Divisors per candidate | 2 … n−1 | 3, 5 … √n (odd only) |
+| Inner loop iterations | O(n) | O(√n / 2) |
+| Overall complexity | O(N²) | O(N · √N / 2) ✅ ~4× faster |
+
+### Pseudocode
+```
+print 2   // only even prime — handled as special case
+
+for candidate = 3 to N step 2:        // odd candidates only
+    isPrime = true
+
+    sqrtCandidate = √candidate
+
+    for divisor = 3 to sqrtCandidate step 2:   // odd divisors only
+        if candidate % divisor == 0:
+            isPrime = false
+            break                      // exit early — composite confirmed
+
+    if isPrime:
+        print candidate
+```
+
+---
+
+## 🧩 C# Code Walkthrough
+
+### Entry Point
+```csharp
+using System;
+
+namespace PrimeNumbersGenerator
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+```
+
+### Read User Input
+```csharp
+            Console.Write("Enter a number N: ");
+            int N = int.Parse(Console.ReadLine());
+
+            // Edge case: no primes below 2
+            if (N < 2) return;
+```
+
+### Handle 2 — The Only Even Prime
+```csharp
+            // Print 2 separately so the main loop can skip all even numbers
+            Console.Write(2 + " ");
+```
+
+### Outer Loop — Odd Candidates Only
+```csharp
+            // Start at 3, step by 2 → generates 3, 5, 7, 9, 11 ...
+            for (int candidate = 3; candidate <= N; candidate += 2)
+            {
+                bool isPrime = true;
+```
+
+### Inner Loop — Trial Division up to √candidate
+```csharp
+                // Only test up to the square root
+                int sqrtCandidate = (int)Math.Sqrt(candidate);
+
+                // Test only odd divisors: 3, 5, 7 ...
+                for (int d = 3; d <= sqrtCandidate; d += 2)
+                {
+                    if (candidate % d == 0)
+                    {
+                        isPrime = false;
+                        break;   // composite confirmed — stop checking
+                    }
+                }
+```
+
+### Print and Close
+```csharp
+                if (isPrime)
+                    Console.Write(candidate + " ");
+            }
+
+            Console.WriteLine();
+        }
+    }
+}
+```
+
+---
+
+## 🔄 GitHub Actions CI
+
+Two separate workflow files are used — one per branch. Code pushed to any other branch (e.g. `feature/*`) triggers **nothing**.
+
+| Branch | Workflow File | Trigger | Build Config |
+|---|---|---|---|
+| `main` | `dotnet.yml` | push to `main` | Debug + Tests |
+| `dev` | `testing.yml` | push to `testing` | Debug + Tests |
+
+### dotnet.yml
+```yaml
+# Fires ONLY on push to the 'main' branch
+name: CI - Main Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+```
+
+### testing.yml
+```yaml
+# Fires ONLY on push to the 'testing' branch
+name: CI - testing Branch
+
+on:
+  push:
+    branches:
+      - testing
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Debug
+
+      # Dev branch also runs unit tests if present
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
 ```
 
 ---
 
 ## ▶️ How to Run Locally
 
-1. Clone repository
-2. Open solution in Visual Studio
-3. Build the project
-4. Run the application
-5. Enter a number to see prime numbers up to N
+1. **Clone the repository**
+```bash
+   git clone https://github.com/Bharathkammala/DevopsTraining.git
+   cd DevopsTraining
+```
+
+2. **Open in Visual Studio**  
+   Double-click `PrimeNumbersGenerator.sln` or use `File → Open → Project/Solution`
+
+3. **Build the solution**  
+   Press `Ctrl + Shift + B` or go to `Build → Build Solution`
+
+4. **Run the application**  
+   Press `F5` (Debug) or `Ctrl + F5` (Run without debugger)
+
+5. **Enter your number when prompted**
+```
+   Enter a number N: 50
+   2 3 5 7 11 13 17 19 23 29 31 37 41 43 47
+```
 
 ---
 
-## 🎯 Purpose of Project
+## 🛠 Tech Stack
+
+| Technology | Role |
+|---|---|
+| C# | Application language |
+| .NET Framework | Runtime & SDK |
+| Visual Studio | IDE |
+| Git & GitHub | Version control & hosting |
+| GitHub Actions | CI/CD automation |
+| ubuntu-latest | Build runner environment |
+
+---
+
+## 🎯 Purpose
 
 This repository was created to:
 
-* Practice GitHub Actions CI setup
-* Demonstrate DevOps fundamentals
-* Showcase automation workflow for .NET projects
+- Practice **GitHub Actions CI** setup from scratch
+- Demonstrate **branch-specific workflow triggers** (main vs dev)
+- Implement and explain an **optimized prime number algorithm**
+- Showcase **DevOps fundamentals** in a real project
 
 ---
 
-## 📬 Author
+## 👤 Author
 
-Prime Numbers Generator – DevOps CI Demo
+**Bharath Kammala** — [github.com/Bharathkammala](https://github.com/Bharathkammala)
